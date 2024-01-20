@@ -99,6 +99,11 @@ app.post("/enroll-admin", async function (req, res, next) {
   const wallet = await buildWallet(Wallets, walletPath);
 
   await enrollAdmin(caClient, wallet, mspOrg1);
+  res.status(200).send({
+    status: true,
+    message: {},
+  });
+  res.end();
 });
 
 
