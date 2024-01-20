@@ -88,6 +88,7 @@ const port = 3001;
 const app = express();
 
 app.use(cors());
+app.use(express.json());
 
 app.get("/ack", function (req, res, next) {
   res.json({ msg: "hi Mom!" });
