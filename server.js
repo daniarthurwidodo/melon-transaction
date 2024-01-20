@@ -111,28 +111,33 @@ app.post("/createWallet", async function (req, res, next) {
   const caClient = buildCAClient(FabricCAServices, ccp, "ca.org1.example.com");
   const wallet = await buildWallet(Wallets, walletPath);
 
-  await registerAndEnrollUser(
-    caClient,
-    wallet,
-    mspOrg1,
-    req.body.userId,
-    "org1.department1"
-  );
+  if (req.body.userId) {
+    await registerAndEnrollUser(
+      caClient,
+      wallet,
+      mspOrg1,
+      req.body.userId,
+      "org1.department1"
+    );
 
-
-  res.status(200).send({
-    status: true,
-    message: req.body.userId,
-  });
-  res.end();
+    res.status(200).send({
+      status: true,
+      message: req.body.userId,
+    });
+    res.end();
+  } else {
+    res.status(500).send({
+      status: true,
+      message: req.body.userId,
+    });
+    res.end();
+  }
 });
-
 
 app.post("/create-asset", async function (req, res, next) {
   const ccp = buildCCPOrg1();
   const wallet = await buildWallet(Wallets, walletPath);
 
-  
   const gateway = new Gateway();
   await gateway.connect(ccp, {
     wallet,
