@@ -106,6 +106,27 @@ app.post("/enroll-admin", async function (req, res, next) {
   res.end();
 });
 
+app.post("/createWallet", async function (req, res, next) {
+  const ccp = buildCCPOrg1();
+  const caClient = buildCAClient(FabricCAServices, ccp, "ca.org1.example.com");
+  const wallet = await buildWallet(Wallets, walletPath);
+
+  await registerAndEnrollUser(
+    caClient,
+    wallet,
+    mspOrg1,
+    req.body.userId,
+    "org1.department1"
+  );
+
+
+  res.status(200).send({
+    status: true,
+    message: req.body.userId,
+  });
+  res.end();
+});
+
 
 app.post("/create-asset", async function (req, res, next) {
   const ccp = buildCCPOrg1();
@@ -115,7 +136,7 @@ app.post("/create-asset", async function (req, res, next) {
   const gateway = new Gateway();
   await gateway.connect(ccp, {
     wallet,
-    identity: org1UserId,
+    identity: req.body.userId,
     discovery: { enabled: true, asLocalhost: true }, // using asLocalhost as this gateway is using a fabric network deployed locally
   });
 
