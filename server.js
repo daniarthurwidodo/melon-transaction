@@ -178,6 +178,7 @@ app.post("/create-asset", async function (req, res, next) {
     req.body.jenisTransaksi,
     req.body.timeline
   );
+  console.log(result);
 
   res.status(200).send({
     status: true,
