@@ -161,10 +161,19 @@ app.post("/create-asset", async function (req, res, next) {
   result = await contract.submitTransaction(
     "CreateAsset",
     req.body.transaksiId,
-    "yellow",
-    "5",
-    "Tom",
-    "1300"
+    req.body.pengirim,
+    req.body.penerima,
+    req.body.melon,
+    req.body.tanggalTanam,
+    req.body.kuantitas,
+    req.body.jenisTanaman,
+    req.body.harga,
+    req.body.suhu,
+    req.body.lamaSimpan,
+    req.body.alasan,
+    req.body.tanggalTransaksi,
+    req.body.jenisTransaksi,
+    req.body.timeline
   );
   if(result){
     res.status(200).send({
