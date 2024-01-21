@@ -177,17 +177,22 @@ app.post("/create-asset", async function (req, res, next) {
     req.body.jenisTransaksi,
     req.body.timeline
   );
-  if(result){
-    res.status(200).send({
-      status: true,
-      message: req.body,
-    });
-  } else {
-    res.status(500).send({
-      status: true,
-      message: result,
-    });
-  }
+
+  res.status(200).send({
+    status: true,
+    message: req.body,
+  });
+  // if(result){
+  //   res.status(200).send({
+  //     status: true,
+  //     message: req.body,
+  //   });
+  // } else {
+  //   res.status(500).send({
+  //     status: true,
+  //     message: result,
+  //   });
+  // }
 
   console.log("*** Result: committed");
   if (`${result}` !== "") {
