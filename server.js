@@ -136,7 +136,8 @@ app.post("/createWallet", async function (req, res, next) {
 });
 
 app.post("/create-asset", async function (req, res, next) {
-  const ccp = buildCCPOrg1();
+  try {
+    const ccp = buildCCPOrg1();
   const wallet = await buildWallet(Wallets, walletPath);
 
   const gateway = new Gateway();
@@ -175,6 +176,13 @@ app.post("/create-asset", async function (req, res, next) {
     message: req.body,
   });
   res.end();
+  } catch (error) {
+    res.status(200).send({
+      status: true,
+      message: error,
+    });
+  }
+  
 });
 
 app.listen(port, () => {
