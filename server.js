@@ -146,12 +146,12 @@ app.post("/create-asset", async function (req, res, next) {
     identity: req.body.userId,
     discovery: { enabled: true, asLocalhost: true }, // using asLocalhost as this gateway is using a fabric network deployed locally
   });
-  console.log(gateway);
+  // console.log(gateway);
   const network = await gateway.getNetwork(channelName);
 
   const contract = network.getContract(chaincodeName);
-  console.log(network);
-  console.log(contract);
+  // console.log(network);
+  // console.log(contract);
   let result = await contract.evaluateTransaction("GetAllAssets");
   console.log(result);
   console.log(`*** Result: ${prettyJSONString(result.toString())}`)
