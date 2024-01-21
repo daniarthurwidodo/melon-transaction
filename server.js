@@ -166,15 +166,24 @@ app.post("/create-asset", async function (req, res, next) {
     "Tom",
     "1300"
   );
+  if(result){
+    res.status(200).send({
+      status: true,
+      message: req.body,
+    });
+  } else {
+    res.status(500).send({
+      status: true,
+      message: result,
+    });
+  }
+
   console.log("*** Result: committed");
   if (`${result}` !== "") {
     console.log(`*** Result: ${prettyJSONString(result.toString())}`);
   }
 
-  res.status(200).send({
-    status: true,
-    message: req.body,
-  });
+  
   res.end();
   } catch (error) {
     res.status(200).send({
