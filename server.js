@@ -178,9 +178,7 @@ app.post("/create-asset", async function (req, res, next) {
     req.body.tanggalTransaksi,
     req.body.jenisTransaksi,
     req.body.timeline
-  ).then( (res) => {
-    console.log(res);
-  })
+  )
   console.log(result);
 
   res.status(200).send({

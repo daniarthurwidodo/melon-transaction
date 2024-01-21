@@ -13,7 +13,15 @@ const { Contract } = require("fabric-contract-api");
 
 class AssetTransfer extends Contract {
   async InitLedger(ctx) {
-    const assets = [];
+    const assets = [
+      {
+        ID: 'asset1',
+        Color: 'blue',
+        Size: 5,
+        Owner: 'Tomoko',
+        AppraisedValue: 300,
+    },
+    ];
 
     for (const asset of assets) {
       asset.docType = "asset";
@@ -31,7 +39,7 @@ class AssetTransfer extends Contract {
   // CreateAsset issues a new asset to the world state with given details.
   async CreateAsset(
     ctx,
-    transaksiId,
+    id,
     pengirim,
     penerima,
     melon,
@@ -47,13 +55,13 @@ class AssetTransfer extends Contract {
     jenisTransaksi,
     timeline
   ) {
-    const exists = await this.AssetExists(ctx, transaksiId);
+    const exists = await this.AssetExists(ctx, id);
     if (exists) {
-      throw new Error(`The asset ${transaksiId} already exists`);
+      throw new Error(`The asset ${id} already exists`);
     }
-
+    console.info('============= START : Create Car ===========');
     const asset = {
-      transaksiId: transaksiId,
+      ID: id,
       pengirim: pengirim,
       penerima: penerima,
       melon: melon,
@@ -71,9 +79,10 @@ class AssetTransfer extends Contract {
     };
     // we insert data in alphabetic order using 'json-stringify-deterministic' and 'sort-keys-recursive'
     await ctx.stub.putState(
-      transaksiId,
+      id,
       Buffer.from(stringify(sortKeysRecursive(asset)))
     );
+    console.info('============= END : Create Car ===========');
     return JSON.stringify(asset);
   }
 
@@ -88,7 +97,7 @@ class AssetTransfer extends Contract {
 
   // UpdateAsset updates an existing asset in the world state with provided parameters.
   async UpdateAsset( ctx,
-    transaksiId,
+    id,
     pengirim,
     penerima,
     melon,
@@ -103,14 +112,14 @@ class AssetTransfer extends Contract {
     tanggalTransaksi,
     jenisTransaksi,
     timeline) {
-    const exists = await this.AssetExists(ctx, transaksiId);
+    const exists = await this.AssetExists(ctx, id);
     if (!exists) {
-      throw new Error(`The asset ${transaksiId} does not exist`);
+      throw new Error(`The asset ${id} does not exist`);
     }
 
     // overwriting original asset with new asset
     const updatedAsset = {
-        transaksiId: transaksiId,
+        ID: id,
         pengirim: pengirim,
         penerima: penerima,
         melon: melon,
@@ -128,7 +137,7 @@ class AssetTransfer extends Contract {
     };
     // we insert data in alphabetic order using 'json-stringify-deterministic' and 'sort-keys-recursive'
     return ctx.stub.putState(
-        transaksiId,
+        id,
       Buffer.from(stringify(sortKeysRecursive(updatedAsset)))
     );
   }
