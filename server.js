@@ -152,14 +152,15 @@ app.post("/create-asset", async function (req, res, next) {
   const contract = network.getContract(chaincodeName);
   // console.log(network);
   // console.log(contract);
-  let result = await contract.evaluateTransaction("GetAllAssets");
-  console.log(result);
-  console.log(`*** Result: ${prettyJSONString(result.toString())}`)
-  console.log(
-    "\n--> Submit Transaction: CreateAsset, creates new asset with ID, color, owner, size, and appraisedValue arguments"
-  );
+  // let result = await contract.evaluateTransaction("GetAllAssets");
+  // console.log(result);
+  // console.log(`*** Result: ${prettyJSONString(result.toString())}`)
+  // console.log(
+  //   "\n--> Submit Transaction: CreateAsset, creates new asset with ID, color, owner, size, and appraisedValue arguments"
+  // );
   console.log(req.body);
-  result = await contract.submitTransaction(
+  // result = await contract.submitTransaction
+  await contract.submitTransaction(
     "CreateAsset",
     req.body.transaksiId,
     req.body.pengirim,
