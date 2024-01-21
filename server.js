@@ -152,8 +152,8 @@ app.post("/create-asset", async function (req, res, next) {
   const contract = network.getContract(chaincodeName);
 
   let result = await contract.evaluateTransaction("GetAllAssets");
-  console.log(`*** Result: ${prettyJSONString(result.toString())}`);
-
+  console.log(result);
+  console.log(`*** Result: ${prettyJSONString(result.toString())}`)
   console.log(
     "\n--> Submit Transaction: CreateAsset, creates new asset with ID, color, owner, size, and appraisedValue arguments"
   );
@@ -195,7 +195,7 @@ app.post("/create-asset", async function (req, res, next) {
   
   res.end();
   } catch (error) {
-    res.status(200).send({
+    res.status(500).send({
       status: true,
       message: error,
     });
