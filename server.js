@@ -150,7 +150,8 @@ app.post("/create-asset", async function (req, res, next) {
   const network = await gateway.getNetwork(channelName);
 
   const contract = network.getContract(chaincodeName);
-
+  console.log(network);
+  console.log(contract);
   let result = await contract.evaluateTransaction("GetAllAssets");
   console.log(result);
   console.log(`*** Result: ${prettyJSONString(result.toString())}`)
