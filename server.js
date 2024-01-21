@@ -15,7 +15,7 @@ import {
 import { fileURLToPath } from "url";
 
 const channelName = process.env.CHANNEL_NAME || "mychannel";
-const chaincodeName = process.env.CHAINCODE_NAME || "basic";
+const chaincodeName = process.env.CHAINCODE_NAME || "melon_1";
 
 function prettyJSONString(inputString) {
   return JSON.stringify(JSON.parse(inputString), null, 2);
