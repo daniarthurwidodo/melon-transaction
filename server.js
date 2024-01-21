@@ -15,7 +15,7 @@ import {
 import { fileURLToPath } from "url";
 
 const channelName = process.env.CHANNEL_NAME || "mychannel";
-const chaincodeName = process.env.CHAINCODE_NAME || "melon";
+const chaincodeName = process.env.CHAINCODE_NAME || "basic";
 
 function prettyJSONString(inputString) {
   return JSON.stringify(JSON.parse(inputString), null, 2);
@@ -152,15 +152,15 @@ app.post("/create-asset", async function (req, res, next) {
   const contract = network.getContract(chaincodeName);
   // console.log(network);
   // console.log(contract);
-  // let result = await contract.evaluateTransaction("GetAllAssets");
-  // console.log(result);
-  // console.log(`*** Result: ${prettyJSONString(result.toString())}`)
-  // console.log(
-  //   "\n--> Submit Transaction: CreateAsset, creates new asset with ID, color, owner, size, and appraisedValue arguments"
-  // );
+  let result = await contract.evaluateTransaction("GetAllAssets");
+  console.log(result);
+  console.log(`*** Result: ${prettyJSONString(result.toString())}`)
+  console.log(
+    "\n--> Submit Transaction: CreateAsset, creates new asset with ID, color, owner, size, and appraisedValue arguments"
+  );
   console.log(req.body);
-  // result = await contract.submitTransaction
-  await contract.submitTransaction(
+  result = await contract.submitTransaction(
+  // await contract.submitTransaction(
     "CreateAsset",
     req.body.transaksiId,
     req.body.pengirim,
