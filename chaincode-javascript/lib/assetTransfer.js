@@ -164,7 +164,7 @@ class AssetTransfer extends Contract {
 
   // GetAllAssets returns all assets found in the world state.
   async GetAllAssets(ctx) {
-    const allResults: any[] = [];
+    const allResults = [];
     // range query with empty string for startKey and endKey does an open-ended query of all assets in the chaincode namespace.
     const iterator = await ctx.stub.getStateByRange("", "");
     let result = await iterator.next();
