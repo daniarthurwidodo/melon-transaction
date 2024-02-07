@@ -20,7 +20,7 @@ class AssetTransfer extends Contract {
         Size: 5,
         Owner: 'Tomoko',
         AppraisedValue: 300,
-    },
+    }
     ];
 
     for (const asset of assets) {

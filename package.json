@@ -19,7 +19,11 @@
     "fabric-network": "^2.2.20",
     "fs": "^0.0.1-security",
     "path": "^0.12.7",
-    "util": "^0.12.5"
+    "util": "^0.12.5",
+    "fabric-contract-api": "^2.0.0",
+    "fabric-shim": "^2.0.0",
+    "json-stringify-deterministic": "^1.0.1",
+    "sort-keys-recursive": "^2.1.2"
   },
   "devDependencies": {
     "@types/cors": "^2.8.17",

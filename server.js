@@ -15,7 +15,7 @@ import {
 import { fileURLToPath } from "url";
 
 const channelName = process.env.CHANNEL_NAME || "mychannel";
-const chaincodeName = process.env.CHAINCODE_NAME || "melon_1";
+const chaincodeName = process.env.CHAINCODE_NAME || "chaincode-melon";
 
 function prettyJSONString(inputString) {
   return JSON.stringify(JSON.parse(inputString), null, 2);
@@ -107,7 +107,7 @@ app.post("/enroll-admin", async function (req, res, next) {
   res.end();
 });
 
-app.post("/createWallet", async function (req, res, next) {
+app.post("/create-wallet", async function (req, res, next) {
   const ccp = buildCCPOrg1();
   const caClient = buildCAClient(FabricCAServices, ccp, "ca.org1.example.com");
   const wallet = await buildWallet(Wallets, walletPath);
@@ -138,79 +138,68 @@ app.post("/createWallet", async function (req, res, next) {
 app.post("/create-asset", async function (req, res, next) {
   try {
     const ccp = buildCCPOrg1();
-  const wallet = await buildWallet(Wallets, walletPath);
+    const wallet = await buildWallet(Wallets, walletPath);
+    console.log(wallet);
+    const gateway = new Gateway();
+    await gateway.connect(ccp, {
+      wallet,
+      identity: req.query.userId,
+      discovery: { enabled: true, asLocalhost: true }, // using asLocalhost as this gateway is using a fabric network deployed locally
+    });
+    console.log(gateway);
+    const network = await gateway.getNetwork(channelName);
 
-  const gateway = new Gateway();
-  await gateway.connect(ccp, {
-    wallet,
-    identity: req.body.userId,
-    discovery: { enabled: true, asLocalhost: true }, // using asLocalhost as this gateway is using a fabric network deployed locally
-  });
-  // console.log(gateway);
-  const network = await gateway.getNetwork(channelName);
-
-  const contract = network.getContract(chaincodeName);
-  // console.log(network);
-  // console.log(contract);
-  let result = await contract.evaluateTransaction("GetAllAssets");
-  console.log(result);
-  console.log(`*** Result: ${prettyJSONString(result.toString())}`)
-  console.log(
-    "\n--> Submit Transaction: CreateAsset, creates new asset with ID, color, owner, size, and appraisedValue arguments"
-  );
-  console.log(req.body);
-  console.log(req.body.transaksiId);
-  console.log(result);
-  result = await contract.submitTransaction(
-  // await contract.submitTransaction(
-    "CreateAsset",
-    req.body.transaksiId,
-    req.body.pengirim,
-    req.body.penerima,
-    req.body.melon,
-    req.body.tanggalTanam,
-    req.body.kuantitas,
-    req.body.jenisTanaman,
-    req.body.harga,
-    req.body.suhu,
-    req.body.lamaSimpan,
-    req.body.alasan,
-    req.body.tanggalTransaksi,
-    req.body.jenisTransaksi,
-    req.body.timeline
-  )
-  console.log(result);
-
-  res.status(200).send({
-    status: true,
-    message: req.body,
-  });
-  // if(result){
-  //   res.status(200).send({
-  //     status: true,
-  //     message: req.body,
-  //   });
-  // } else {
-  //   res.status(500).send({
-  //     status: true,
-  //     message: result,
-  //   });
-  // }
-
-  console.log("*** Result: committed");
-  if (`${result}` !== "") {
+    const contract = network.getContract(chaincodeName);
+    console.log(network);
+    console.log(contract);
+    let result = await contract.evaluateTransaction("GetAllAssets");
     console.log(`*** Result: ${prettyJSONString(result.toString())}`);
-  }
+    console.log(
+      "\n--> Submit Transaction: CreateAsset, creates new asset with ID, color, owner, size, and appraisedValue arguments"
+    );
+    console.log(req.body);
+    console.log(result);
+    result = await contract.submitTransaction(
+      // await contract.submitTransaction(
+      "CreateAsset",
+      req.body.ID,
+      req.body.Color,
+      req.body.Size,
+      req.body.Owner,
+      req.body.AppraisedValue,
+      req.body.AppraisedValue1,
+      req.body.AppraisedValue2
+    );
+    console.log(result);
 
-  
-  res.end();
+    res.status(200).send({
+      status: true,
+      message: req.body,
+    });
+    // if(result){
+    //   res.status(200).send({
+    //     status: true,
+    //     message: req.body,
+    //   });
+    // } else {
+    //   res.status(500).send({
+    //     status: true,
+    //     message: result,
+    //   });
+    // }
+
+    console.log("*** Result: committed");
+    if (`${result}` !== "") {
+      console.log(`*** Result: ${prettyJSONString(result.toString())}`);
+    }
+
+    res.end();
   } catch (error) {
     res.status(500).send({
       status: true,
       message: error,
     });
   }
-  
 });
 
 app.listen(port, () => {
