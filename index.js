@@ -128,22 +128,36 @@ app.post("/create-wallet", async function (req, res, next) {
     res.end();
   } else {
     res.status(500).send({
-      status: true,
+      status: error,
       message: req.body.userId,
     });
     res.end();
   }
 });
 
-app.post("/create-asset", async function (req, res, next) {
+app.post("/create-asset/:userID", async function (req, res, next) {
+  const ccp = buildCCPOrg1();
+  const caClient = buildCAClient(FabricCAServices, ccp, "ca.org1.example.com");
+  const wallet = await buildWallet(Wallets, walletPath);
+
+  const gateway = new Gateway();
+
+  console.log(wallet);
+  console.log(req.params.userID);
   try {
-    const ccp = buildCCPOrg1();
-    const wallet = await buildWallet(Wallets, walletPath);
-    console.log(wallet);
-    const gateway = new Gateway();
+    await enrollAdmin(caClient, wallet, mspOrg1);
+
+    await registerAndEnrollUser(
+      caClient,
+      wallet,
+      mspOrg1,
+      req.params.userID,
+      "org1.department1"
+    );
+
     await gateway.connect(ccp, {
       wallet,
-      identity: req.query.userId,
+      identity: req.params.userID,
       discovery: { enabled: true, asLocalhost: true }, // using asLocalhost as this gateway is using a fabric network deployed locally
     });
     console.log(gateway);
