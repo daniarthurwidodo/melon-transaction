@@ -166,7 +166,7 @@ app.post("/create-asset/:userID", async function (req, res, next) {
     console.log(
       "\n--> Submit Transaction: CreateAsset, creates new asset with ID, color, owner, size, and appraisedValue arguments"
     );
-    console.log(req.body);
+    console.log(req.body.ID);
     result = await contract.submitTransaction(
       "CreateAsset",
       req.body.ID,
@@ -191,7 +191,9 @@ app.post("/create-asset/:userID", async function (req, res, next) {
       req.body.timeline07,
       req.body.timeline08,
       req.body.timeline09,
-    );
+    ).then( (res) => {
+      console.log(res);
+    })
     console.log(result);
 
     res.status(200).send({
