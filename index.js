@@ -146,7 +146,6 @@ app.post("/create-asset/:userID", async function (req, res, next) {
   console.log(req.params.userID);
   try {
     await enrollAdmin(caClient, wallet, mspOrg1);
-
     await registerAndEnrollUser(
       caClient,
       wallet,
@@ -160,21 +159,17 @@ app.post("/create-asset/:userID", async function (req, res, next) {
       identity: req.params.userID,
       discovery: { enabled: true, asLocalhost: true }, // using asLocalhost as this gateway is using a fabric network deployed locally
     });
-    console.log(gateway);
     const network = await gateway.getNetwork(channelName);
 
     const contract = network.getContract(chaincodeName);
-    console.log(network);
-    console.log(contract);
     let result = await contract.evaluateTransaction("GetAllAssets");
     console.log(`*** Result: ${prettyJSONString(result.toString())}`);
     console.log(
       "\n--> Submit Transaction: CreateAsset, creates new asset with ID, color, owner, size, and appraisedValue arguments"
     );
-    console.log(req.body);
-    console.log(result);
+    // console.log(req.body);
+    // console.log(result);
     result = await contract.submitTransaction(
-      // await contract.submitTransaction(
       "CreateAsset",
       req.body.ID,
       req.body.Color,
@@ -199,7 +194,7 @@ app.post("/create-asset/:userID", async function (req, res, next) {
     res.end();
   } catch (error) {
     res.status(500).send({
-      status: true,
+      status: false,
       message: error,
     });
   }
