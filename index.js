@@ -192,7 +192,7 @@ app.post("/create-asset/:userID", async function (req, res, next) {
       req.body.timeline08,
       req.body.timeline09,
     ).then( (res) => {
-      console.log(res);
+      console.log(res.toString());
     })
     console.log(result);
 
