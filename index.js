@@ -142,7 +142,6 @@ app.post("/create-asset/:userID", async function (req, res, next) {
 
   const gateway = new Gateway();
 
-  console.log(wallet);
   console.log(req.params.userID);
   try {
     await enrollAdmin(caClient, wallet, mspOrg1);
@@ -167,17 +166,31 @@ app.post("/create-asset/:userID", async function (req, res, next) {
     console.log(
       "\n--> Submit Transaction: CreateAsset, creates new asset with ID, color, owner, size, and appraisedValue arguments"
     );
-    // console.log(req.body);
-    // console.log(result);
+    console.log(req.body);
     result = await contract.submitTransaction(
       "CreateAsset",
       req.body.ID,
-      req.body.Color,
-      req.body.Size,
-      req.body.Owner,
-      req.body.AppraisedValue,
-      req.body.AppraisedValue1,
-      req.body.AppraisedValue2
+      req.body.pengirim,
+      req.body.penerima,
+      req.body.melon,
+      req.body.tanggalTanam,
+      req.body.tanggalPanen,
+      req.body.kuantitas,
+      req.body.jenisTanaman,
+      req.body.varietas,
+      req.body.jenisTransaksi,
+      req.body.suhu,
+      req.body.harga,
+      req.body.lamaPenyimpanan,
+      req.body.timeline01,
+      req.body.timeline02,
+      req.body.timeline03,
+      req.body.timeline04,
+      req.body.timeline05,
+      req.body.timeline06,
+      req.body.timeline07,
+      req.body.timeline08,
+      req.body.timeline09,
     );
     console.log(result);
 
