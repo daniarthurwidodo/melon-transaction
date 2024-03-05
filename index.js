@@ -7,11 +7,11 @@ import {
   buildCAClient,
   registerAndEnrollUser,
   enrollAdmin,
-} from "../test-application/javascript/CAUtil.js";
+} from "./test-application/javascript/CAUtil.cjs";
 import {
   buildCCPOrg1,
   buildWallet,
-} from "../test-application/javascript/AppUtil.js";
+} from "./test-application/javascript/AppUtil.cjs";
 import { fileURLToPath } from "url";
 
 const channelName = process.env.CHANNEL_NAME || "mychannel";
@@ -84,7 +84,7 @@ const assetId = `asset${Date.now()}`;
 import express from "express";
 import cors from "cors";
 
-const port = 3001;
+const port = 3002;
 const app = express();
 
 app.use(cors());
@@ -176,17 +176,6 @@ app.post("/create-asset", async function (req, res, next) {
       status: true,
       message: req.body,
     });
-    // if(result){
-    //   res.status(200).send({
-    //     status: true,
-    //     message: req.body,
-    //   });
-    // } else {
-    //   res.status(500).send({
-    //     status: true,
-    //     message: result,
-    //   });
-    // }
 
     console.log("*** Result: committed");
     if (`${result}` !== "") {
