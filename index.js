@@ -143,76 +143,142 @@ app.post("/create-asset/:userID", async function (req, res, next) {
   const gateway = new Gateway();
 
   console.log(req.params.userID);
-  try {
-    await enrollAdmin(caClient, wallet, mspOrg1);
-    await registerAndEnrollUser(
-      caClient,
-      wallet,
-      mspOrg1,
-      req.params.userID,
-      "org1.department1"
-    );
 
-    await gateway.connect(ccp, {
-      wallet,
-      identity: req.params.userID,
-      discovery: { enabled: true, asLocalhost: true }, // using asLocalhost as this gateway is using a fabric network deployed locally
-    });
-    const network = await gateway.getNetwork(channelName);
+  await enrollAdmin(caClient, wallet, mspOrg1);
+  await registerAndEnrollUser(
+    caClient,
+    wallet,
+    mspOrg1,
+    req.params.userID,
+    "org1.department1"
+  );
 
-    const contract = network.getContract(chaincodeName);
-    let result = await contract.evaluateTransaction("GetAllAssets");
+  await gateway.connect(ccp, {
+    wallet,
+    identity: req.params.userID,
+    discovery: { enabled: true, asLocalhost: true }, // using asLocalhost as this gateway is using a fabric network deployed locally
+  });
+  const network = await gateway.getNetwork(channelName);
+
+  const contract = network.getContract(chaincodeName);
+  let result = await contract.evaluateTransaction("GetAllAssets");
+  console.log(`*** Result: ${prettyJSONString(result.toString())}`);
+  console.log(
+    "\n--> Submit Transaction: CreateAsset, creates new asset with ID, color, owner, size, and appraisedValue arguments"
+  );
+  console.log(req.body.ID);
+  result = await contract.submitTransaction(
+    "CreateAsset",
+    req.body.ID,
+    req.body.pengirim,
+    req.body.penerima,
+    req.body.melon,
+    req.body.tanggalTanam,
+    req.body.tanggalPanen,
+    req.body.kuantitas,
+    req.body.jenisTanaman,
+    req.body.varietas,
+    req.body.jenisTransaksi,
+    req.body.suhu,
+    req.body.harga,
+    req.body.lamaPenyimpanan,
+    req.body.timeline01,
+    req.body.timeline02,
+    req.body.timeline03,
+    req.body.timeline04,
+    req.body.timeline05,
+    req.body.timeline06,
+    req.body.timeline07,
+    req.body.timeline08,
+    req.body.timeline09,
+  ).then( (res) => {
+    console.log(res.toString());
+  })
+  console.log(result);
+
+  res.status(200).send({
+    status: true,
+    message: req.body,
+  });
+
+  console.log("*** Result: committed");
+  if (`${result}` !== "") {
     console.log(`*** Result: ${prettyJSONString(result.toString())}`);
-    console.log(
-      "\n--> Submit Transaction: CreateAsset, creates new asset with ID, color, owner, size, and appraisedValue arguments"
-    );
-    console.log(req.body.ID);
-    result = await contract.submitTransaction(
-      "CreateAsset",
-      req.body.ID,
-      req.body.pengirim,
-      req.body.penerima,
-      req.body.melon,
-      req.body.tanggalTanam,
-      req.body.tanggalPanen,
-      req.body.kuantitas,
-      req.body.jenisTanaman,
-      req.body.varietas,
-      req.body.jenisTransaksi,
-      req.body.suhu,
-      req.body.harga,
-      req.body.lamaPenyimpanan,
-      req.body.timeline01,
-      req.body.timeline02,
-      req.body.timeline03,
-      req.body.timeline04,
-      req.body.timeline05,
-      req.body.timeline06,
-      req.body.timeline07,
-      req.body.timeline08,
-      req.body.timeline09,
-    ).then( (res) => {
-      console.log(res.toString());
-    })
-    console.log(result);
-
-    res.status(200).send({
-      status: true,
-      message: req.body,
-    });
-
-    console.log("*** Result: committed");
-    if (`${result}` !== "") {
-      console.log(`*** Result: ${prettyJSONString(result.toString())}`);
-    }
-
-    res.end();
-  } catch (error) {
-    res.status(500).send({
-      status: false,
-      message: error,
-    });
   }
+
+  res.end();
+
+  
+  // try {
+  //   await enrollAdmin(caClient, wallet, mspOrg1);
+  //   await registerAndEnrollUser(
+  //     caClient,
+  //     wallet,
+  //     mspOrg1,
+  //     req.params.userID,
+  //     "org1.department1"
+  //   );
+
+  //   await gateway.connect(ccp, {
+  //     wallet,
+  //     identity: req.params.userID,
+  //     discovery: { enabled: true, asLocalhost: true }, // using asLocalhost as this gateway is using a fabric network deployed locally
+  //   });
+  //   const network = await gateway.getNetwork(channelName);
+
+  //   const contract = network.getContract(chaincodeName);
+  //   let result = await contract.evaluateTransaction("GetAllAssets");
+  //   console.log(`*** Result: ${prettyJSONString(result.toString())}`);
+  //   console.log(
+  //     "\n--> Submit Transaction: CreateAsset, creates new asset with ID, color, owner, size, and appraisedValue arguments"
+  //   );
+  //   console.log(req.body.ID);
+  //   result = await contract.submitTransaction(
+  //     "CreateAsset",
+  //     req.body.ID,
+  //     req.body.pengirim,
+  //     req.body.penerima,
+  //     req.body.melon,
+  //     req.body.tanggalTanam,
+  //     req.body.tanggalPanen,
+  //     req.body.kuantitas,
+  //     req.body.jenisTanaman,
+  //     req.body.varietas,
+  //     req.body.jenisTransaksi,
+  //     req.body.suhu,
+  //     req.body.harga,
+  //     req.body.lamaPenyimpanan,
+  //     req.body.timeline01,
+  //     req.body.timeline02,
+  //     req.body.timeline03,
+  //     req.body.timeline04,
+  //     req.body.timeline05,
+  //     req.body.timeline06,
+  //     req.body.timeline07,
+  //     req.body.timeline08,
+  //     req.body.timeline09,
+  //   ).then( (res) => {
+  //     console.log(res.toString());
+  //   })
+  //   console.log(result);
+
+  //   res.status(200).send({
+  //     status: true,
+  //     message: req.body,
+  //   });
+
+  //   console.log("*** Result: committed");
+  //   if (`${result}` !== "") {
+  //     console.log(`*** Result: ${prettyJSONString(result.toString())}`);
+  //   }
+
+  //   res.end();
+  // } catch (error) {
+  //   res.status(500).send({
+  //     status: false,
+  //     message: error,
+  //   });
+  // }
 });
 
 app.listen(port, () => {
