@@ -192,7 +192,7 @@ app.post("/create-asset/:userID", async function (req, res, next) {
     req.body.timeline08,
     req.body.timeline09,
   ).then( (res) => {
-    console.log(res.toString());
+    console.log(res);
   })
   console.log(result);
 
@@ -208,7 +208,7 @@ app.post("/create-asset/:userID", async function (req, res, next) {
 
   res.end();
 
-  
+
   // try {
   //   await enrollAdmin(caClient, wallet, mspOrg1);
   //   await registerAndEnrollUser(
