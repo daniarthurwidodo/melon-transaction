@@ -233,8 +233,8 @@ app.listen(port, () => {
   console.log(`Example app listening on port ${port}`);
 });
 
-const https = require("https"),
- fs = require("fs");
+import * as https from "https";
+import fs from "fs";
 
 const options = {
   key: fs.readFileSync("../private.key"),
