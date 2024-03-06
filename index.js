@@ -233,6 +233,15 @@ app.listen(port, () => {
   console.log(`Example app listening on port ${port}`);
 });
 
+const https = require("https"),
+ fs = require("fs");
+
+const options = {
+  key: fs.readFileSync("../private.key"),
+  cert: fs.readFileSync("../certificate.crt")
+};
+https.createServer(options, app).listen(8083);
+
 function envOrDefault(key, defaultValue) {
   return process.env[key] || defaultValue;
 }
